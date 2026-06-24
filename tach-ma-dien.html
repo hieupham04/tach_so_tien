@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Tool Tách Số Tiền</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Segoe UI;
+        }
+
+        body {
+
+            height: 100vh;
+
+            background: linear-gradient(270deg, #020617, #0f172a, #020617);
+
+            background-size: 400% 400%;
+
+            animation: bgmove 12s ease infinite;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: white;
+
+        }
+
+        @keyframes bgmove {
+
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+
+        }
+
+        .container {
+
+            width: 420px;
+
+            padding: 35px;
+
+            border-radius: 18px;
+
+            background: rgba(255, 255, 255, 0.05);
+
+            backdrop-filter: blur(15px);
+
+            box-shadow:
+
+                0 0 40px rgba(0, 0, 0, 0.6),
+                0 0 80px rgba(34, 197, 94, 0.1);
+
+            animation: fadein 1s ease;
+
+        }
+
+        @keyframes fadein {
+
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+        }
+
+        h1 {
+
+            text-align: center;
+
+            margin-bottom: 25px;
+
+            font-size: 30px;
+
+            letter-spacing: 1px;
+
+            background: linear-gradient(90deg, #22c55e, #4ade80);
+
+            -webkit-background-clip: text;
+
+            color: transparent;
+
+        }
+
+        textarea {
+
+            width: 100%;
+
+            height: 140px;
+
+            padding: 16px;
+
+            border-radius: 12px;
+
+            border: none;
+
+            background: #1e293b;
+
+            color: white;
+
+            font-size: 15px;
+
+            outline: none;
+
+            resize: none;
+
+            transition: 0.3s;
+
+        }
+
+        textarea:focus {
+
+            box-shadow: 0 0 15px #22c55e;
+
+            transform: scale(1.02);
+
+        }
+
+        textarea::placeholder {
+
+            color: #94a3b8;
+
+        }
+
+        .result {
+
+            margin-top: 22px;
+
+            background: #020617;
+
+            padding: 20px;
+
+            border-radius: 12px;
+
+            min-height: 90px;
+
+            white-space: pre-line;
+
+            font-size: 18px;
+
+            letter-spacing: 1px;
+
+            transition: 0.3s;
+
+        }
+
+        .result:hover {
+
+            box-shadow: 0 0 20px rgba(34, 197, 94, 0.3);
+
+        }
+
+        button {
+
+            margin-top: 20px;
+
+            width: 100%;
+
+            padding: 14px;
+
+            border: none;
+
+            border-radius: 12px;
+
+            font-size: 17px;
+
+            font-weight: bold;
+
+            background: linear-gradient(90deg, #22c55e, #16a34a);
+
+            color: white;
+
+            cursor: pointer;
+
+            transition: 0.25s;
+
+            box-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
+
+        }
+
+        button:hover {
+
+            transform: scale(1.05);
+
+            box-shadow: 0 0 30px rgba(34, 197, 94, 0.8);
+
+        }
+
+        button:active {
+
+            transform: scale(0.97);
+
+        }
+
+        .copy {
+
+            margin-top: 12px;
+
+            text-align: center;
+
+            color: #4ade80;
+
+            font-weight: bold;
+
+            opacity: 0;
+
+            transition: 0.3s;
+
+        }
+
+        .copy.show {
+
+            opacity: 1;
+
+        }
+
+        .footer {
+
+            margin-top: 18px;
+
+            text-align: center;
+
+            font-size: 12px;
+
+            color: #64748b;
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Tách số tiền</h1>
+
+        <textarea id="input" placeholder="Ctrl + V dữ liệu vào đây..."></textarea>
+
+        <div class="result" id="output"></div>
+
+        <button onclick="copyAll()">COPY KẾT QUẢ</button>
+
+        <div class="copy" id="copied">Đã copy toàn bộ</div>
+
+        <div class="footer">Tool tách tiền tự động</div>
+
+    </div>
+
+    <script>
+
+        const input = document.getElementById("input")
+        const output = document.getElementById("output")
+        const copied = document.getElementById("copied")
+
+        input.addEventListener("input", run)
+
+        function run() {
+
+            let text = input.value
+
+            let lines = text.split("\n")
+
+            let result = []
+
+            lines.forEach(line => {
+
+                let match = line.match(/(\d[\d.,]*)\s*đ?$/i)
+
+                if (match) {
+
+                    let number = match[1]
+
+                    number = number.replace(/[.,]/g, "")
+
+                    number = Math.floor(parseInt(number) / 1000)
+
+                    result.push(number)
+
+                }
+
+            })
+
+            output.innerText = result.join("\n")
+
+        }
+
+        function copyAll() {
+
+            let text = output.innerText
+
+            if (!text) return
+
+            navigator.clipboard.writeText(text)
+
+            copied.classList.add("show")
+
+            setTimeout(() => {
+                copied.classList.remove("show")
+            }, 2000)
+
+            input.value = ""
+            output.innerText = ""
+
+        }
+
+    </script>
+
+</body>
+
+</html>
