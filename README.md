@@ -105,8 +105,6 @@ https://your-username.github.io/tach-tien-tool/
 
 **Phạm Thanh Hiếu**
 
-- Facebook: ...
-- Email: ...
 - GitHub: https://github.com/your-username
 
 ---
