@@ -2,7 +2,7 @@
 
 Một công cụ đơn giản giúp tách số tiền từ danh sách đơn hàng và xuất nhanh kết quả để phục vụ ghép đơn, đối soát hoặc nhập liệu.
 
-![Demo](./images/demo.png)
+![Demo](./images/anh1.png)
 
 ## 🚀 Tính năng
 
